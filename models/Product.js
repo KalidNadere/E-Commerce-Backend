@@ -1,5 +1,8 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
+const Category = require("./Category");
+const Tag = require("./Tag");
+const ProductTag = require("./ProductTag");
 
 // Initialize Product model (table) by extending off Sequelize's Model class
 class Product extends Model {}
@@ -34,8 +37,8 @@ Product.init(
     category_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'category',
-        key: 'id',
+        model: "category",
+        key: "id",
       },
     },
   },
@@ -50,17 +53,17 @@ Product.init(
 
 // Associations
 Category.hasMany(Product, {
-  foreignKey: 'category_id',
-  onDelete: 'CASCADE',
+  foreignKey: "category_id",
+  onDelete: "CASCADE",
 });
 
 Product.belongsTo(Category, {
-  foreignKey: 'category_id',
+  foreignKey: "category_id",
 });
 
 Product.belongsToMany(Tag, {
   through: ProductTag,
-  foreignKey: 'product_id',
+  foreignKey: "product_id",
 });
 
 module.exports = Product;
