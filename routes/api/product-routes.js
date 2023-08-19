@@ -138,7 +138,7 @@ router.delete('/:id', async (req, res) => {
     }
 
     // Delete associations in the ProductTag model
-    await Product.destroy({ where: { product_id: product.id } });
+    await Product.destroy({ where: { id: req.params.id } });
 
     // Delete the product
     await product.destroy();
