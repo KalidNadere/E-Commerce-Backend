@@ -126,8 +126,29 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+// Delete one product by its `id` value
+router.delete('/:id', async (req, res) => {
+  try {
+    // Find product by its id
+    const product = await Product.findByPk(req.params.id);
+    
+    if (!product) {
+      res.status(404).json({ message: 'Product not found' });
+      return;
+    }
+
+    // Delete associations in the ProductTag model
+    await Product.destroy({ where: { product_id: product.id } });
+
+    // Delete the product
+    await product.destroy();
+
+    res.status(200).json({ message: 'Product deleted' });
+  } catch (err) {
+    console.log(err);
+    res.status(500),json(err);
+  }
 });
+
 
 module.exports = router;
